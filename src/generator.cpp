@@ -11,6 +11,10 @@
 generator::generator():
 pythia_("/cvmfs/cms.cern.ch/slc7_amd64_gcc700/external/pythia8/240-nmpfii/share/Pythia8/xmldoc")
 {
+    pythia_.readString("WeakBosonAndParton:qg2Wq  = on"); //some met some recoil etc
+
+    //pythia_.readString("WeakBosonExchange:ff2ff(t:gmZ) = on");
+
     pythia_.readString("Beams:eCM = 13000.");
     pythia_.readString("Init:showChangedParticleData = off");
     pythia_.readString("Init:showChangedSettings = on");
@@ -18,24 +22,29 @@ pythia_("/cvmfs/cms.cern.ch/slc7_amd64_gcc700/external/pythia8/240-nmpfii/share/
     pythia_.readString("Next:numberShowInfo = 0");
     pythia_.readString("Next:numberShowProcess = 0");
     pythia_.readString("Next:numberShowEvent = 0");
-    pythia_.readString("PhaseSpace:pTHatMin = 20.");
+    pythia_.readString("PhaseSpace:pTHatMin = 10.");
+    pythia_.readString("Main:numberOfEvents = 1");
 
-    pythia_.readString("WeakBosonAndParton:qg2Wq  = on"); //some met some recoil etc
+
     pythia_.init();
 
 }
 
 
-std::vector<particle> generator::generateEvent()const{
+std::vector<particle> generator::generateEvent(){
 
     std::vector<particle>  outgen;
 
     unsigned iTry(0);
     while (true) {
-        if (!pythia_.next()) {
+        auto good = pythia_.next();
+        if (!good) {
             if (++iTry < 10)
                 continue;
             pythia_.stat();
+            break;
+        }
+        else{
             break;
         }
     }

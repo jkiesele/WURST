@@ -13,10 +13,11 @@
 #include "particle.h"
 
 class generator{
+public:
 
     generator();
 
-    std::vector<particle> generateEvent()const;
+    std::vector<particle> generateEvent();
 
 private:
     mutable Pythia8::Pythia pythia_;

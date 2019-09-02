@@ -8,6 +8,9 @@
 #include <iostream>
 #include "TString.h"
 
+#include "generator.h"
+#include "reconstruction.h"
+
 void coutHelp(){
     std::cout << "\nUSAGE: runReco <options> \n";
 }
@@ -26,5 +29,24 @@ int main(int argc, char* argv[]){
 
     //do stuff
 
+    generator gen;
+    reconstruction reco;
+
+    auto genparticles = gen.generateEvent();
+
+    std::cout << "gen particles " << std::endl;
+    for(const auto& p:genparticles){
+        std::cout << p.getTruePdgID() << " : " << p.getTrueP4().Pt() << std::endl;
+    }
+
+    //just for fun, run jet reco
+
+    std::vector<jet> dummy;
+    auto genjets =reco.makeJets(genparticles,dummy,false);
+
+    std::cout << "jets " << std::endl;
+    for(const auto& jet: genjets){
+        std::cout << jet.pt() << " " << jet.p4().Eta() << std::endl;
+    }
 
 }
