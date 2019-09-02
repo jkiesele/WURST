@@ -10,7 +10,20 @@
 
 generator::generator():
 pythia_("/cvmfs/cms.cern.ch/slc7_amd64_gcc700/external/pythia8/240-nmpfii/share/Pythia8/xmldoc")
-{}
+{
+    pythia_.readString("Beams:eCM = 13000.");
+    pythia_.readString("Init:showChangedParticleData = off");
+    pythia_.readString("Init:showChangedSettings = on");
+    pythia_.readString("Next:numberShowLHA = 0");
+    pythia_.readString("Next:numberShowInfo = 0");
+    pythia_.readString("Next:numberShowProcess = 0");
+    pythia_.readString("Next:numberShowEvent = 0");
+    pythia_.readString("PhaseSpace:pTHatMin = 20.");
+
+    pythia_.readString("WeakBosonAndParton:qg2Wq  = on"); //some met some recoil etc
+    pythia_.init();
+
+}
 
 
 std::vector<particle> generator::generateEvent()const{
