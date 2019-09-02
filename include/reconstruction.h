@@ -11,6 +11,7 @@
 #include "particle.h"
 #include "jet.h"
 #include "TRandom3.h"
+#include "TLorentzVector.h"
 
 #include "fastjet/JetDefinition.hh"
 
@@ -28,6 +29,7 @@ public:
     std::vector<jet> makeJets(const std::vector<particle>& parts,
             std::vector<jet>& genjets, bool wurst) const;
 
+    TLorentzVector calculateMet(const std::vector<particle>& parts, bool wurst)const;
 
 private:
     TRandom3 rand_;

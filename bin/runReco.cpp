@@ -32,21 +32,29 @@ int main(int argc, char* argv[]){
     generator gen;
     reconstruction reco;
 
-    auto genparticles = gen.generateEvent();
+    for(size_t event=0;event<10;event++){
 
-    std::cout << "gen particles " << std::endl;
-    for(const auto& p:genparticles){
-        std::cout << p.getTruePdgID() << " : " << p.getTrueP4().Pt() << std::endl;
-    }
+        auto genparticles = gen.generateEvent();
 
-    //just for fun, run jet reco
+      //  std::cout << "gen particles " << std::endl;
+        for(const auto& p:genparticles){
+       //     std::cout << p.getTruePdgID() << " : " << p.getTrueP4().Pt() << std::endl;
+        }
 
-    std::vector<jet> dummy;
-    auto genjets =reco.makeJets(genparticles,dummy,false);
+        //just for fun, run jet reco
 
-    std::cout << "jets " << std::endl;
-    for(const auto& jet: genjets){
-        std::cout << jet.pt() << " " << jet.p4().Eta() << std::endl;
+        std::vector<jet> dummy;
+        auto genjets =reco.makeJets(genparticles,dummy,false);
+
+        std::cout << "genjets " << std::endl;
+        for(const auto& jet: genjets){
+            std::cout << jet.pt() << " " << jet.p4().Eta() << std::endl;
+        }
+
+        auto metp4 = reco.calculateMet(genparticles, false);
+        std::cout << "genmet " << std::endl;
+        std::cout << metp4.Pt() << " " << metp4.Px() << " " << metp4.Py()<< std::endl;
+
     }
 
 }

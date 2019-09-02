@@ -19,6 +19,31 @@ minjetpt_(15.)
 
 }
 
+TLorentzVector reconstruction::calculateMet(const std::vector<particle>& parts, bool wurst) const{
+    TLorentzVector out;
+
+    double px=0,py=0;
+
+    for(const auto& p: parts){
+        if(wurst){
+            for(size_t i=0;i<particle::nparticletypes;i++){
+                auto  p4 = p.getP4((particle::particleType)i);
+                p4 = p4*p.getProb((particle::particleType)i);
+                px -= p4.Px();
+                py -= p4.Py();
+            }
+        }
+        else{
+            const auto&  p4 = p.getP4(p.getMaxProb());
+            px -= p4.Px();
+            py -= p4.Py();
+        }
+    }
+    out.SetPxPyPzE(px,py, 0, std::sqrt(px*px+py*py));
+
+    return out;
+}
+
 
 std::vector<jet> reconstruction::makeJets(const std::vector<particle>& parts, std::vector<jet>& genjets, bool wurst)const{
     //...
